@@ -1,0 +1,83 @@
+# MediaMTX configuration for ThanhPhong Auto garage management system
+# Optimized for stability and iOS compatibility
+
+# Logging settings
+logLevel: info
+logDestinations: [stdout, file]
+logFile: /logs/mediamtx.log
+
+# Server addresses
+rtspAddress: :8554
+hlsAddress: :8888
+
+# Standard HLS configuration (better for iOS compatibility)
+hlsSegmentCount: 6
+hlsSegmentDuration: 3s  # Changed to 3s to match camera keyframe interval
+hlsPartDuration: 200ms
+hlsSegmentMaxSize: 50M
+hlsAllowOrigin: "*"
+hlsAlwaysRemux: no
+hlsMuxerCloseAfter: 60s
+writeQueueSize: 2048 # 2048 packets
+
+# Disable Low-Latency HLS in favor of standard HLS for better compatibility
+hlsVariant: mpegts
+
+# Timeout settings
+readTimeout: 20s
+writeTimeout: 20s
+
+# RTSP transport protocols
+rtspTransports: [tcp, udp]
+
+# Disable recording completely
+record: false
+
+# Path defaults for all streams
+pathDefaults:
+  # Use TCP for more reliable streaming
+  rtspTransport: tcp
+  # Explicitly disable recording for all paths
+  record: false
+  # Keep streams alive for a while after viewer disconnects
+  sourceOnDemandCloseAfter: 30s
+
+# API server settings
+api: yes
+apiAddress: :9997
+
+# Authentication method
+authMethod: internal
+
+# Internal authentication.
+# list of users.
+authInternalUsers:
+  # Default unprivileged user.
+  # Username. 'any' means any user, including anonymous ones.
+- user: any
+  # Password. Not used in case of 'any' user.
+  pass:
+  # IPs or networks allowed to use this user. An empty list means any IP.
+  ips: []
+  # List of permissions.
+  permissions:
+    # Available actions are: publish, read, playback, api, metrics, pprof.
+  - action: publish
+    # Paths can be set to further restrict access to a specific path.
+    # An empty path means any path.
+    # Regular expressions can be used by using a tilde as prefix.
+    path:
+  - action: read
+    path:
+  - action: playback
+    path:
+  - action: api
+    path:
+
+# Path configuration for dynamic paths
+paths:
+  # Dynamic path configuration via API
+  # Individual camera paths will be created through the API
+  # without modifying this configuration file
+  
+  # Optional - static test camera if needed

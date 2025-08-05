@@ -1,0 +1,49 @@
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:latest-ffmpeg
+    container_name: mediamtx
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+      - ./recordings:/recordings
+      - ./logs:/logs
+    ports:
+      - 8554:8554/tcp # RTSP
+      - 8888:8888/tcp # HLS
+      - 9997:9997/tcp # API
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9997/v3/config/get"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    networks:
+      - camera-network
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower-mediamtx
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=86400 # Check for updates once a day
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: mediamtx
+    networks:
+      - camera-network
+
+networks:
+  camera-network:
+    driver: bridge
