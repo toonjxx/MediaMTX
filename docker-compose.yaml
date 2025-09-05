@@ -1,10 +1,9 @@
 services:
   mediamtx:
-    image: bluenviron/mediamtx:latest-ffmpeg
+    build: . 
     container_name: mediamtx
     restart: unless-stopped
     volumes:
-      - ./mediamtx.yml:/mediamtx.yml:ro
       - ./logs:/logs
       - ./recordings:/recordings
     ports:
