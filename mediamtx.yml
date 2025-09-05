@@ -4,7 +4,7 @@
 # Logging settings
 logLevel: info
 logDestinations: [stdout, file]
-logFile: /logs/mediamtx.log
+logFile: /mediamtx.log
 
 # Server addresses
 rtspAddress: :8554
@@ -29,9 +29,6 @@ writeTimeout: 20s
 
 # RTSP transport protocols
 rtspTransports: [tcp, udp]
-
-# Disable recording completely
-record: false
 
 # Path defaults for all streams
 pathDefaults:
