@@ -3,12 +3,16 @@ services:
     image: bluenviron/mediamtx:latest-ffmpeg
     container_name: mediamtx
     restart: unless-stopped
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml
+      - ./logs:/logs
+      - ./recordings:/recordings
     ports:
-      - 8554:8554 # RTSP
-      - 8888:8888 # HLS
-      - 9997:9997 # API
+      - "8554:8554" # RTSP
+      - "8888:8888" # HLS
+      - "9997:9997" # API
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9997/v3/config/get"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9997/v3/config/global/get"]
       interval: 30s
       timeout: 10s
       retries: 3
