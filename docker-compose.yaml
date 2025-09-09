@@ -7,14 +7,16 @@ services:
       - ./logs:/logs
       - ./recordings:/recordings
     ports:
-      - "8554:8554" # RTSP
-      - "8888:8888" # HLS
-      - "9997:9997" # API
+      - "8554:8554/tcp" # RTSP
+    expose:
+      - "9997"   # API (HTTP, inside Docker only)
+      - "8888"   # HLS (HTTP, inside Docker only)
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:9997/v3/config/global/get"]
       interval: 30s
       timeout: 10s
       retries: 3
+    
     
     networks:
       - coolify        # <-- share network with Traefik
