@@ -15,7 +15,7 @@ hlsSegmentCount: 6
 hlsSegmentDuration: 3s  # Changed to 3s to match camera keyframe interval
 hlsPartDuration: 200ms
 hlsSegmentMaxSize: 50M
-hlsAllowOrigin: "https://otothanhphong.vn"
+hlsAllowOrigin: "*"
 hlsAlwaysRemux: no
 hlsMuxerCloseAfter: 60s
 writeQueueSize: 2048 # 2048 packets
@@ -45,7 +45,7 @@ apiAddress: :9997
 
 # Authentication method
 authMethod: internal
-apiAllowOrigin: "https://otothanhphong.vn"
+apiAllowOrigin: "*"
 # Internal authentication.
 # list of users.
 authInternalUsers:
